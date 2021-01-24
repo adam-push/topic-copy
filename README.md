@@ -34,6 +34,17 @@ Topic selector specifying the source topics to be copied.
 ### `--target` (Required)
 Topic root under which the selected topics will be copied.
 
+### `--trim`
+#### Default: `0`
+Number of leading path elements to remove from the source topic path when generating the target topic path.
+
+e.g.
+
+with `--source '?view//' --target 'local' --trim 0`, then `view/foo/bar` maps to `local/view/foo/bar`
+
+with `--source '?view//' --target 'local' --trim 1`, then `view/foo/bar` maps to `local/foo/bar`
+
+
 ### `--remove`
 #### Default: `_VIEW,REMOVAL`
 A list of topic properties that will be removed from the topic specification when copying from the source to destination topics. The source topic is not modified.

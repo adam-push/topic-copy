@@ -36,6 +36,7 @@ public class TopicCopy {
     private final String credentials;
     private final String sourceSelector;
     private final String targetBranch;
+    private final int trimPathLength;
     private final List<String> removeProperties;
 
     private Session session;
@@ -48,6 +49,7 @@ public class TopicCopy {
         credentials = options.has("credentials") ? (String)options.valueOf("credentials") : null;
         sourceSelector = (String)options.valueOf("source");
         targetBranch = (String)options.valueOf("target");
+        trimPathLength = (Integer)options.valueOf("trim");
         removeProperties = List.of(((String)options.valueOf("remove")).split(","));
     }
 
@@ -79,7 +81,7 @@ public class TopicCopy {
     }
 
     public void run() {
-        stream = new GenericValueStream(session, targetBranch, removeProperties);
+        stream = new GenericValueStream(session, targetBranch, trimPathLength, removeProperties);
         topics.addStream(sourceSelector, Bytes.class, stream);
 
         topics.subscribe(sourceSelector);
@@ -131,6 +133,11 @@ public class TopicCopy {
                     .withRequiredArg()
                     .ofType(String.class);
 
+                acceptsAll(asList("trim"), "Number of leading path elements to trim from a source topic path when generating the target topic path")
+                    .withRequiredArg()
+                    .ofType(Integer.class)
+                    .defaultsTo(Integer.valueOf(0));
+                
                 acceptsAll(asList("remove"), "Comma-separated list of properties to remove")
                     .withRequiredArg()
                     .ofType(String.class)
