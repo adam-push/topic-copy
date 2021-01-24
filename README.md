@@ -25,7 +25,7 @@ Diffusion host url
 Principal (username) to use when connecting to Diffusion. Typically "`control`" or "`admin`".
 
 ### `--credentials`
-#### Default: `password`%^[
+#### Default: `password`
 Password (or other crednetials) to use when connecting to Diffusion.
 
 ### `--source` (Required)
